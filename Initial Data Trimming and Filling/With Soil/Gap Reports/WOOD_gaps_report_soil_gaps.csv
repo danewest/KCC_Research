@@ -1,5 +1,3 @@
-Site,Variable,Gap_Start,Gap_End,Duration,Duration_Minutes,Gap_Type
-WOOD,SM02,2025-01-27 21:00:00,2025-01-27 21:00:00,0 days 00:00:00,0.0,Short Gap (<= 1 hour)
-WOOD,SM04,2025-01-27 21:00:00,2025-01-27 21:00:00,0 days 00:00:00,0.0,Short Gap (<= 1 hour)
-WOOD,ST02,2025-01-27 21:00:00,2025-01-27 21:00:00,0 days 00:00:00,0.0,Short Gap (<= 1 hour)
-WOOD,ST04,2025-01-27 21:00:00,2025-01-27 21:00:00,0 days 00:00:00,0.0,Short Gap (<= 1 hour)
+version https://git-lfs.github.com/spec/v1
+oid sha256:a56de2c94dc02a901ddcc6587258caf1079184c57efdeb6217a88c201efc15f3
+size 435
