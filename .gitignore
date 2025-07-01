@@ -1,1 +1,15 @@
-mesonet_venv_312
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Environments
+.env
+.venv/
+venv/
+mesonet_venv_312/
