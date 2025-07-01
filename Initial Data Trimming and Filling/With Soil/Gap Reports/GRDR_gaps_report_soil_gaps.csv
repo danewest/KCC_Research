@@ -1,0 +1,5 @@
+Site,Variable,Gap_Start,Gap_End,Duration,Duration_Minutes,Gap_Type
+GRDR,SM02,2024-05-27 05:00:00,2025-05-11 20:00:00,349 days 15:00:00,503460.0,Very Long Gap (> 2160 hours - UNFILLABLE)
+GRDR,ST02,2024-05-27 05:00:00,2025-05-11 20:00:00,349 days 15:00:00,503460.0,Very Long Gap (> 2160 hours - UNFILLABLE)
+GRDR,SM04,2025-04-22 17:00:00,2025-04-22 18:00:00,0 days 01:00:00,60.0,Short Gap (<= 1 hour)
+GRDR,ST04,2025-04-22 17:00:00,2025-04-22 18:00:00,0 days 01:00:00,60.0,Short Gap (<= 1 hour)

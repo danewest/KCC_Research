@@ -1,0 +1,5 @@
+Site,Variable,Gap_Start,Gap_End,Duration,Duration_Minutes,Gap_Type
+GRDR,PRES,2025-04-22 16:40:00,2025-04-22 18:20:00,0 days 01:40:00,100.0,"Long Gap (> 1 hour, <= 2160 hours)"
+GRDR,TAIR,2025-04-22 16:40:00,2025-04-22 18:20:00,0 days 01:40:00,100.0,"Long Gap (> 1 hour, <= 2160 hours)"
+GRDR,VT20,2025-04-22 16:40:00,2025-04-22 18:20:00,0 days 01:40:00,100.0,"Long Gap (> 1 hour, <= 2160 hours)"
+GRDR,VT90,2025-04-22 16:40:00,2025-04-22 18:20:00,0 days 01:40:00,100.0,"Long Gap (> 1 hour, <= 2160 hours)"
