@@ -31,7 +31,7 @@ def calculateFeatureImportance(df: DataFrame , target_col: str, excluded_feature
     print("Prediction complete. Calculating feature importances...")
     dt_imp = pd.Series(dt.feature_importances_, index=X.columns)
     print("DT feature importances calculated.")
-
+    
     print("Random forest training/testing...\n")
     # Random Forest
     print("Initializing random forest regressor...")
@@ -45,7 +45,7 @@ def calculateFeatureImportance(df: DataFrame , target_col: str, excluded_feature
     print("Permutation importance calculation complete.")
     rf_imp = pd.Series(rf_perm.importances_mean, index=X.columns)
     print("RF importance series created.")
-
+    
     print("SHAP training/testing...\n")
     # SHAP values (using Random Forest)
     print("Initializing SHAP explainer...")
@@ -81,10 +81,10 @@ def calculateFeatureImportance(df: DataFrame , target_col: str, excluded_feature
     plt.gca().invert_yaxis()
     plt.tight_layout()
     plt.show()
-
+    
     print("Plotting SHAP...\n")
     # Plot SHAP summary
-    shap.summary_plot(shap_values, X_test_sample, plot_type="bar", max_display=10)
+    shap.summary_plot(shap_values, X_test_sample, max_display=10)
     print(" ")
 
     # ---- Model Performance Comparison ---- #
