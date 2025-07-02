@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import shap
 from pandas import DataFrame
 import sklearn
-print(f"Scikit-learn version being used: {sklearn.__version__}")
+import numpy as np
 
 def calculateFeatureImportance(df: DataFrame , target_col: str, excluded_features: list[str] = ['VT90_TAIR_diff', 'VT90_VT20_diff', 'VT90', 'VT20', 'TAIR', 'SM04', 'ST04', 'UTCTimestampCollected', 'NetSiteAbbrev', 'County']):
     # Prepare X and y
@@ -35,7 +35,7 @@ def calculateFeatureImportance(df: DataFrame , target_col: str, excluded_feature
     print("Random forest training/testing...\n")
     # Random Forest
     print("Initializing random forest regressor...")
-    rf = RandomForestRegressor(n_estimators=50, random_state=42, n_jobs=-1)
+    rf = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
     print("Starting random forest fitting...")
     rf.fit(X_train, y_train)
     print("Random forest fitting complete. Starting prediction...")
@@ -49,7 +49,7 @@ def calculateFeatureImportance(df: DataFrame , target_col: str, excluded_feature
     print("SHAP training/testing...\n")
     # SHAP values (using Random Forest)
     print("Initializing SHAP explainer...")
-    explainer = shap.PermutationExplainer(rf.predict, X_test)
+    explainer = shap.PermutationExplainer(rf.predict, X_test, n_jobs=-1)
     print("Explainer initialized. Starting SHAP value calculation...")
     sample_size = 1000
     print(f"Sampling {sample_size} rows from X_test for SHAP explanation...")
@@ -88,31 +88,36 @@ def calculateFeatureImportance(df: DataFrame , target_col: str, excluded_feature
     print(" ")
 
     # ---- Model Performance Comparison ---- #
-    print("\n--- Model Performance ---")
-    print(f"Decision Tree R²: {r2_score(y_test, y_pred_dt):.4f}")
-    print(f"Decision Tree RMSE: {mean_squared_error(y_test, y_pred_dt, squared=False):.4f}")
-    print(f"Random Forest R²: {r2_score(y_test, y_pred_rf):.4f}")
-    print(f"Random Forest RMSE: {mean_squared_error(y_test, y_pred_rf, squared=False):.4f}")
+    dt_r2 = r2_score(y_test, y_pred_dt)
+    dt_rmse = np.sqrt(mean_squared_error(y_test, y_pred_dt))
 
-    # Return for further use
-    return {
-        "dt_importance": dt_imp,
-        "rf_importance": rf_imp,
-        "shap_values": shap_values,
-        "dt_metrics": {
-            "r2": r2_score(y_test, y_pred_dt),
-            "rmse": mean_squared_error(y_test, y_pred_dt, squared=False)
-        },
-        "rf_metrics": {
-            "r2": r2_score(y_test, y_pred_rf),
-            "rmse": mean_squared_error(y_test, y_pred_rf, squared=False)
-        }
+    rf_r2 = r2_score(y_test, y_pred_rf)
+    rf_rmse = np.sqrt(mean_squared_error(y_test, y_pred_rf))
+
+    performance_data = {
+        'Decision Tree': [dt_r2, dt_rmse],
+        'Random Forest': [rf_r2, rf_rmse]
     }
+    performance_df = pd.DataFrame(performance_data, index=['R²', 'RMSE'])
+
+    # Plotting Model Performance
+    plt.figure(figsize=(10,6))
+
+    performance_df.T.plot(kind='bar', ax=plt.gca(), width=0.8)
+
+    plt.title("Model Performance Comparison (R² and RMSE)", fontsize=16)
+    plt.ylabel("Score", fontsize=12)
+    plt.xlabel("Model Type", fontsize=12)
+    plt.xticks(rotation=0, ha='center', fontsize=10) # Keep labels horizontal
+    plt.legend(title="Metric", bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.tight_layout(rect=[0, 0, 0.9, 1])
+    plt.show()
 
 if __name__ == "__main__":
     try:
         # Load the CSVs
-        GRDR_df = pd.read_csv("../Processed Data/GRDR_interpolated.csv")
+        # GRDR_df = pd.read_csv("../Processed Data/GRDR_interpolated.csv")
         WOOD_df = pd.read_csv("../Processed Data/WOOD_interpolated.csv")
 
         # Create difference features for GRDR
@@ -120,7 +125,7 @@ if __name__ == "__main__":
         GRDR_df['VT90_VT20_diff'] = GRDR_df['VT90'] - GRDR_df['VT20']
 
         # Create difference features for WOOD
-        WOOD_df['VT90_VT20_diff'] = WOOD_df['VT90'] - WOOD_df['TAIR']
+        WOOD_df['VT90_TAIR_diff'] = WOOD_df['VT90'] - WOOD_df['TAIR']
         WOOD_df['VT90_VT20_diff'] = WOOD_df['VT90'] - WOOD_df['VT20']
 
         # Execution
